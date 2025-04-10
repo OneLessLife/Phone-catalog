@@ -1,0 +1,135 @@
+<?php
+	session_start();
+	require_once "conn.php";
+	$message = '';
+	
+	if($_POST){
+		$username='';
+		if(isset($_POST['username'])){
+			$username = $_POST['username'];
+		}
+		
+		$password='';
+		if(isset($_POST['password'])){
+			$password = $_POST['password'];
+		}	
+		
+		if($username && $password){
+			$query = "SELECT * FROM users 
+						WHERE 
+						username='$username' 
+						AND 
+						password='$password' ";
+						
+			$result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+			$found = mysqli_num_rows($result);
+			
+			if($found){
+				$_SESSION['admin'] = "secret";
+				header("location:admin.php");
+			}
+			else {
+				$message = "Login failed. Please try again.";
+			}
+		}
+		
+		
+		
+	}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Phone Catalog</title>
+  <link rel="stylesheet" href="style.css">
+  <meta content="text/html; charset=iso-8859-2" http-equiv="Content-Type">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+      <div class="logo"><a href="#">11880</a></div>
+        <ul class="links">
+          <li><a href="index2.php">Home</a></li>
+		  <li><a href="people.php">Browse</a></li>
+          <li>
+            <a href="contact-form.php">Contact</a>
+          </li>
+		  <li><a button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+</li></a>
+<div id="id01" class="modal">
+  
+  <form class="modal-content animate" action="/action_page.php" method="post">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+	<form action="<?php print $_SERVER['PHP_SELF'] ?>" method="post">
+    <div class="container">
+      <label for="username"><b>Username</b></label>
+      <input type="text" name="username" id="username" value="" placeholder="Username" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="text" name="password" id="password" value="" placeholder="Password" required>
+        
+      <button type="submit">Login</button>
+    </div>
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </form>
+</div>
+</form>
+<script>
+var modal = document.getElementById('id01');
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+                </ul>
+      </div>
+      <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Type Something to Search..." required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form>
+    </nav>
+  </div>
+<br><br><br>
+<div class="w3-content w3-section" style="max-width:1000px">
+  <img class="mySlides" src="call1.jpg" style="width:100%">
+  <img class="mySlides" src="call2.jpg" style="width:100%">
+  <img class="mySlides" src="call3.jpg" style="width:100%">
+</div>
+
+<script>
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}    
+  x[myIndex-1].style.display = "block";  
+  setTimeout(carousel, 3000); // Change image every 2 seconds
+}
+</script>
+</body>
+</html>
